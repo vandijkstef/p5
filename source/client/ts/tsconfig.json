@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+		"removeComments": true,
+		"checkJs": false,
+		"target": "esnext",
+		"lib": ["es2015", "es2017", "dom"],
+		"outDir": "../../../public/js",
+		"module": "commonjs",
+	},
+	"include": [
+		"./"	
+	]
+}

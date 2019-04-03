@@ -1,0 +1,20 @@
+- Prototype
+	- Responsive
+		- Mobiel
+		- Tablet
+		- Desktop
+	- Huisstijl opdrachtgever (NS)
+	- Unieke vormgeving verhalen
+	- Verhalen
+		- Vinden/Zoeken
+		- Lezen
+		- Opslaan
+		- Reactie
+			- Like
+			- Comment
+			- Foto
+	- Offline
+
+- Ontwerpdocument
+	- Concept
+	- Uitwerking
