@@ -2,10 +2,11 @@
     "compilerOptions": {
 		"removeComments": true,
 		"checkJs": false,
-		"target": "esnext",
-		"lib": ["es2015", "es2017", "dom"],
+		"target": "es5",
+		"lib": ["es6", "dom"],
 		"outDir": "../../../public/js",
-		"module": "commonjs",
+		"module": "es2015",
+		// "esModuleInterop": true,
 	},
 	"include": [
 		"./"	

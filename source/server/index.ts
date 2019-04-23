@@ -1,4 +1,9 @@
+import * as bodyParser from 'body-parser';
 import * as express from 'express';
+import * as session from 'express-session';
+import * as fs from 'fs';
+import * as fileStore from 'session-file-store';
+const FileStore = fileStore(session);
 
 const config = {
 	port: 3000,
@@ -18,9 +23,32 @@ app.set('views', 'views');
 // Sending something (responding) ends the response cycle
 app.use(express.static('public'));
 
-app.use((req, res, next) => {
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+app.use(bodyParser.json());
+
+app.use(session({
+	secret: 'chocolate',
+	resave: false,
+	saveUninitialized: true,
+	store: new FileStore(),
+	cookie: { secure: false }
+}))
+
+app.use((req: any, res, next) => {
 	res.locals.title = 'Undefined';
 	res.locals.menu = JSON.parse(process.env.menuObject);
+
+	const userFile = `./db/${req.session.user}.json`;
+	if (!fs.existsSync(userFile)) {
+		req.session.user = null;
+	}
+
+	if (req.session.user) {
+		res.locals.user = JSON.parse(fs.readFileSync(userFile, 'utf8'));
+	}
+	
 	next();
 });
 

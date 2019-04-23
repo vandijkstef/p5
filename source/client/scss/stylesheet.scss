@@ -1,3 +1,450 @@
+$maincolor: #4ed967;
+$blue: #362f90;
+$pink: #EE3869;
+$grey: #F3E5D8;
+$white: rgba(255, 255, 255, .9);
+$black: #231F20;
+
+$trans: .2s;
+$commonRadius: .4rem;
+
+main article {
+	display: grid;
+	margin: 0 auto;
+	grid-gap: 1rem;
+	@media (min-width: 50em) { 
+		padding: 1rem;
+		grid-template-columns: 1fr 1fr;
+	}
+	@media (min-width: 70em) {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+	@media (min-width: 90em) {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		max-width: 90em;
+	}
+}
+
+main > section {
+	@media (min-width: 90em) {
+		max-width: 90em;
+		margin: 0 auto;
+	}
+}
+
+h1, h2, h3, h4, h5, h6, p, li, a {
+	font-size: 1em;
+	font-family: sans-serif;
+	&.price {
+		font-size: 1.5em;
+		color: $blue;
+	}
+}
+
+h1, h2, h3, h4, h5 {
+	color: $maincolor;
+}
+
+h1, h2 {
+	font-size: 2.375em;
+}
+
+h3, h4, h5 {
+	font-size: 1.25em;
+}
+
+p {
+	color: $black;
+}
+ 
+@mixin createButtonStyle($className, $background, $text) {
+	@if ($className == 'default') {
+		@include _buttonStyle($background, $text);
+	} @else {
+		&.#{$className} {
+			@include _buttonStyle($background, $text);
+		}
+	}
+}
+@mixin _buttonStyle($background, $text) {
+	background-color: $background;
+	color: $text;
+	border-color: $background;
+	&:hover:not(:disabled), &:focus:not(:disabled) {
+		background-color: lighten($background, 10);
+		color: $text;
+		border-color: lighten($background, 10);
+		border-bottom-color: $background;
+	}
+	&:focus:not(:disabled) {
+		text-decoration: underline;
+	}
+	&.inv {
+		background-color: $text;
+		color: $background;
+		border-color: $text;
+		&:hover:not(:disabled), &:focus:not(:disabled) {
+			background-color: $text;
+			color: lighten($background, 10);
+			border-color: $text;
+		}
+	}
+	&.hoverinv {
+		&:hover:not(:disabled), &:focus:not(:disabled) {
+			background-color: $text;
+			color: $background;
+			border-color: $text;
+		}
+	}
+}
+
+a.button, button, input[type=submit], .btn {
+	// Defaults
+	border-radius: $commonRadius;
+	padding: .3rem 2rem;
+	font-weight: 800;
+	font-size: 1.1em;
+	transition: $trans * 1.5;
+	text-decoration: none;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	&:not(.default) {
+		// border:  solid; // Width is defined in the _buttonStyle()
+		&:hover:not(:disabled), &:focus:not(:disabled) {
+			transition: $trans / 2;
+			// TODO: Extra funky focus thingy
+		}
+		&:disabled {
+			background-color: $grey;
+			cursor: not-allowed;
+		}
+		@include createButtonStyle('default', $blue, $white);
+		// Other button styles
+		@include createButtonStyle('action', $maincolor, $white);
+		@include createButtonStyle('active', $pink, $white);
+		// @include createButtonStyle('confirm', $, $textcolor-light);
+		@include createButtonStyle('error', red, $white);
+		@include createButtonStyle('disabled', $grey, $white);
+		&.disabled {
+			cursor: not-allowed;
+		}
+	}
+}
+
+
 body {
-	background-color: yellow;
+	position: relative;
+	padding-top: 5em;
+	margin: 0;
+	& > header {
+		background-color: $white;
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		width: 100%;
+		box-shadow: 0 0.3125em 0.625em 0 rgba(0,0,0,.15);
+		padding: 0;
+		h1 {
+			margin: 1.2rem .6rem 0 0;
+		}
+		#logo {
+			padding-left: 1rem;
+			flex-grow: 2;
+			position: relative;
+			display: flex;
+			align-items: center;
+			svg {
+				position: relative;
+				bottom: -.8rem;
+			}
+		}
+		a {
+			position: relative;
+			top: -.8rem;
+			padding-right: 1rem;
+		}
+		ul {
+			padding: 0;
+			margin: 0;
+			display: flex;
+			list-style: none;
+		}
+	}
+}
+
+#hero {
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	justify-content: space-around;
+	padding: 2em 5vh;
+	section {
+		max-width: 20em;
+		border-radius: $commonRadius;
+		&:first-of-type {
+			background-color: $white;
+			padding: 0 2rem;
+		}
+	}
+	& > img {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: -1;
+		width: 100vw;
+	}
+}
+
+.vPanel {
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, .7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	animation: fadeIn $trans * 2 ease-out;
+	&.disabled {
+		display: none;
+	}
+	& > div {
+		background-color: white;
+		border-radius: $commonRadius;
+		padding: 1rem;
+		animation: fadeInDelay $trans * 2 ease-out;
+		max-width: 50em;
+		width: 100%;
+		margin: 0 1rem;
+		max-height: 100vh;
+		overflow-y: scroll;
+	}
+}
+
+label {
+	font-weight: normal;
+	display: block;
+	font-size: 1.2em;
+	cursor: pointer;
+	input:not([type=submit]), textarea {
+		font-size: 1em;
+		margin: 0;
+		margin-bottom: .6rem;
+	}
+	input[type=radio], input[type=checkbox] {
+		margin-right: .5em;
+		margin-bottom: 0;
+	}
+}
+input:not([type=submit]), textarea, select {
+	padding: 0.5em .6em;
+	font-size: 1.2em;
+	border: .13rem solid $grey;
+	background-color: rgba($grey, .05);
+	border-radius: $commonRadius;
+	max-width: 100%;
+	margin-bottom: 1em;
+	display: block;
+	transition: $trans * 2;
+	&:hover, &:focus {
+		border-color: darken($grey, 5);
+	}
+	&.missing {
+		border: 1px solid red;
+	}
+	&:invalid {
+		border-color: red;
+		background-color: rgba(red, .05);
+		&:hover, &:focus {
+			border-color: darken(red, 25);
+		}
+	}
+	&:placeholder-shown {
+		border-color: rgba($maincolor, .1);
+		background-color: rgba($maincolor, .05);
+		&:hover, &:focus {
+			border-color: rgba($maincolor, .3);
+		}
+		&:required:not(:disabled) {
+			border-color: $maincolor;
+			&:hover, &:focus {
+				border-color: darken($maincolor, 18);
+			}
+		}
+	}
+	&:valid:not(:placeholder-shown) {
+		border-color: green;
+		background-color: rgba(green, .05);
+		&:hover, &:focus {
+			border-color: darken(green, 5);
+		}
+	}
+	&:disabled {
+		border-color: $grey;
+		background-color: $grey;
+		&:hover, &:focus {
+			border-color: $grey;
+		}
+	}
+}
+input[type=radio], input[type=checkbox] {
+	display: inline;
+	margin: 0 1rem 0 0;
+	// TODO: Radio buttons
+	+ label {
+		display: inline;
+	}
+}
+textarea {
+	min-height: 8em;
+	+ .notice {
+		margin-top: 0;
+		color: $grey;
+	}
+}
+select {
+	border-color: green;
+	background-color: rgba(green, .05);
+}
+
+legend {
+	float: left;
+	font-size: 1.2em;
+	margin-left: -.1em;
+	margin-bottom: .8em;
+	margin-top: .2em;
+	width: 100%;
+}
+
+fieldset {
+	border: 0;
+	border: 1px solid rgba($maincolor, .1);
+	padding: .8rem 1rem;
+	margin: 0;
+	margin-bottom: .6rem;
+	border-radius: $commonRadius;
+	&:valid {
+		background-color: rgba(green, .05);
+		& & {
+			background-color: unset;
+		}
+	}
+	& & {
+		margin: -1em 0 1em;
+		legend {
+			font-size: 1.2em;
+		}
+	}
+}
+
+.slide {
+	display: flex;
+	overflow-x: scroll;
+	scrollbar-width: none;
+	position: relative;
+	grid-gap: 2rem;
+	&.vertical {
+		flex-direction: column;
+		overflow-x: unset;
+		overflow-y: scroll;
+	}
+	&.sliding {
+		cursor: grab;
+	}
+	@media (min-width: 25em) {
+		&::-webkit-scrollbar { 
+			display: none; 
+		}
+	}
+	& > * {
+		min-width: 22vw;
+		&:not(:last-of-type) {
+			margin-right: 1rem;
+		}
+		@media (max-width: 40em)  {
+			min-width: 60vw;
+		}
+		@media (max-width: 25em)  {
+			min-width: 100%;
+		}
+		& > img {
+			max-width: none;
+		}
+	} 
+}
+
+
+#filter {
+	display: grid;
+	// grid-gap: 1rem;
+	padding: 1rem 0;
+	@media (min-width: 30em) and (max-width: 60em) {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		button {
+			grid-column: span 2;
+			&:first-of-type, &:nth-of-type(2) {
+				grid-column: span 3;
+			}
+		}
+	}
+	@media (min-width: 60em) {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		max-width: 60em;
+		margin: 0 auto;
+		button {
+			&:first-of-type {
+				border-radius: $commonRadius 0 0 $commonRadius;
+			}
+			&:last-of-type {
+				border-radius: 0 $commonRadius $commonRadius 0;
+			}
+		}
+	}
+	button {
+		padding: .6rem;
+		border-radius: 0;
+	}
+}
+
+#user {
+	padding: .3rem .8rem;
+	font-size: 2em;
+	display: flex;
+	justify-content: center;
+	span {
+		font-size: .6em;
+		margin-top: .2rem;
+		margin-left: .8rem;
+	}
+}
+
+.story {
+	padding: 0 1em;
+	background-color: rgba($blue, .05);
+	&.fav {
+		background-color: rgba($maincolor, .05);
+		.fav {
+			background-color: $pink;
+		}
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes fadeInDelay {
+	0%, 65% {
+		opacity: 0;
+	}
 }
