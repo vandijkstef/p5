@@ -1,8 +1,10 @@
 import { StoryDB } from './StoryDB.js';
 import { Renderer } from './Renderer.js';
 import { Router } from './Router.js';
+import { Hero } from './hero.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+	new Hero('#hero > section');
 	new Router([{
 		url: '/',
 		route: () => {
@@ -50,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 										main.insertBefore(sectionLiked, filter);
 									}
 								});
+								
 							});
 						});
 					});
