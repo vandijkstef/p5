@@ -177,7 +177,7 @@ body {
 }
 
 #hero {
-	background-color: red;
+	background-color: yellow;
 	position: relative;
 	// height: 100vh;
 	width: 100vw;
@@ -199,11 +199,12 @@ body {
 		&:hover {
 			width: 350px;
 			height: 350px;
-			z-index: 99;
+			z-index: 60;
 		}
 		&.active {
-			width: 150vw;
-			height: 150vw;
+			width: 700px;
+			height: 700px;
+			z-index: 70;
 		}
 		img {
 			position: absolute;
