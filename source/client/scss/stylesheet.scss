@@ -26,6 +26,8 @@ main article {
 }
 
 main > section {
+	position: relative;
+	z-index: 90;
 	@media (min-width: 90em) {
 		max-width: 90em;
 		margin: 0 auto;
@@ -137,10 +139,11 @@ body {
 	position: relative;
 	padding-top: 5em;
 	margin: 0;
+	transition: background-color 1s;
 	& > header {
 		background-color: $white;
 		position: fixed;
-		z-index: 10;
+		z-index: 80;
 		top: 0;
 		display: flex;
 		justify-content: space-between;
@@ -177,17 +180,15 @@ body {
 }
 
 #hero {
-	background-color: yellow;
 	position: relative;
-	// height: 100vh;
 	width: 100vw;
 	padding-top: 56.25%;
-	overflow: hidden;
+	margin-top: -.2rem;
+	// overflow: hidden;
 	section {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: green;
 		width: 200px;
 		height: 200px;
 		position: absolute;
@@ -196,24 +197,64 @@ body {
 		transition: 1s;
 		color: rgba(255, 255, 255, 0);
 		overflow: hidden;
+		cursor: pointer;
 		&:hover {
 			width: 350px;
 			height: 350px;
 			z-index: 60;
+			h2 {
+				font-size: 3.2em;
+			}
+			img {
+				opacity: .9;
+			}
 		}
 		&.active {
-			width: 700px;
-			height: 700px;
+			width: 7000px;
+			height: 7000px;
 			z-index: 70;
+			cursor: unset;
+			h2 {
+				font-size: 4.5em;
+			}
+			img {
+				opacity: 1;
+				mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+				-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+			}
+		}
+		h2 {
+			// mix-blend-mode: color-dodge;
+			transition: font-size 1s;
 		}
 		img {
 			position: absolute;
 			z-index: -99;
-			width: 100vw;
+			width: 140vw;
 			transition: 1s;
+			opacity: .7;
+			transform: translateX(-20vw);
+			mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
+			-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
 		}
 	}
 }
+
+@mixin season($name, $background) {
+	body##{$name} {
+		background-color: rgba($background, .5);
+		#hero > section:not(##{$name}) {
+			opacity: 0;
+		}
+		// h1, h2, h3, h4, h5, h6 {
+		// 	color: #{$main}
+		// }
+	}
+}
+
+@include season('winter', #add8e6);
+@include season('weekend', #ffdab9);
+@include season('summer', #f0e68c);
 
 .vPanel {
 	position: fixed;
@@ -452,6 +493,12 @@ fieldset {
 	}
 }
 
+#recommended {
+	section {
+		animation: fadeInUp 1s; // TODO: Enhance
+	}
+}
+
 @keyframes fadeIn {
 	from {
 		opacity: 0;
@@ -461,5 +508,17 @@ fieldset {
 @keyframes fadeInDelay {
 	0%, 65% {
 		opacity: 0;
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 100%, 0);
+	}
+
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 }

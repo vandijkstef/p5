@@ -4,13 +4,16 @@ import { Router } from './Router.js';
 import { Hero } from './hero.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+	Renderer.set();
+
 	new Hero('#hero > section');
-	new Router([{
-		url: '/',
-		route: () => {
+	
+	const hero = document.querySelector('#hero');
+	hero.addEventListener('click', function (e) {
+		if (e.target !== this) {
 			const DB = new StoryDB(() => {
 				DB.getAll().then((stories: Array<any>) => {
-					Renderer.set();
+					console.log(stories);
 					const main = document.createElement('main');
 					document.body.appendChild(main);
 
@@ -32,15 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
 								stories[24],
 							];
 							Renderer.renderStories(recommendedStories, 'recommended').then((recommended) => {
+
 								const sectionRecommended = document.createElement('section');
 								const title = document.createElement('h2');
 								title.innerText = 'Aanbevolen';
 								sectionRecommended.appendChild(title);
 								sectionRecommended.appendChild(recommended);
-
 								main.insertBefore(sectionRecommended, filter);
 
 								Renderer.renderStories(stories, 'fav').then((favDOM) => {
+
 									const favStories = favDOM.querySelectorAll('.story');
 									if (favStories.length) {
 										const sectionLiked = document.createElement('section');
@@ -52,12 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
 										main.insertBefore(sectionLiked, filter);
 									}
 								});
-								
 							});
 						});
 					});
 				});
-			})
+			});
 		}
-	}]);
+	});
 });

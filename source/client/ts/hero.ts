@@ -44,14 +44,15 @@ export class Hero {
 	
 	activate(this: blob) {
 		if (this.classList.contains('active')) {
+			// TODO: Make seperate back button
 			this.classList.remove('active');
 			this.image.style.top = parseInt(this.dataset.top) * -1 + 175 + 'px';
 			this.image.style.left = parseInt(this.dataset.left) * -1 + 175 + 'px';
 			document.body.id = '';
 		} else {
 			this.classList.add('active');
-			this.image.style.top = parseInt(this.dataset.top) * -1 + 350 + 'px';
-			this.image.style.left = parseInt(this.dataset.left) * -1 + 350 + 'px';
+			this.image.style.top = parseInt(this.dataset.top) * -1 + 3500 + 'px';
+			this.image.style.left = parseInt(this.dataset.left) * -1 + 3500 + 'px';
 			document.body.id = this.id;
 		}
 	}
