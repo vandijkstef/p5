@@ -62,5 +62,5 @@ typings/
 
 /server
 public/
-
+sessions/
 package-lock.json
