@@ -1,18 +1,18 @@
-import { StoryDB } from './StoryDB.js';
-import { Renderer } from './Renderer.js';
-import { Router } from './Router.js';
 import { Hero } from './hero.js';
+import { Renderer } from './Renderer.js';
+import { StoryDB } from './StoryDB.js';
+// import { Router } from './Router.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 	Renderer.set();
 
-	new Hero('#hero > section');
-	
+	const heroBanner = new Hero('#hero > section');
+
 	const hero = document.querySelector('#hero');
-	hero.addEventListener('click', function (e) {
+	hero.addEventListener('click', function(e) {
 		if (e.target !== this) {
 			const DB = new StoryDB(() => {
-				DB.getAll().then((stories: Array<any>) => {
+				DB.getAll().then((stories: any[]) => {
 					console.log(stories);
 					const main = document.createElement('main');
 					document.body.appendChild(main);
@@ -37,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 							Renderer.renderStories(recommendedStories, 'recommended').then((recommended) => {
 
 								const sectionRecommended = document.createElement('section');
-								const title = document.createElement('h2');
-								title.innerText = 'Aanbevolen';
-								sectionRecommended.appendChild(title);
+								const recommendedTitle = document.createElement('h2');
+								recommendedTitle.innerText = 'Aanbevolen';
+								sectionRecommended.appendChild(recommendedTitle);
 								sectionRecommended.appendChild(recommended);
 								main.insertBefore(sectionRecommended, filter);
 
@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 									const favStories = favDOM.querySelectorAll('.story');
 									if (favStories.length) {
 										const sectionLiked = document.createElement('section');
-										const title = document.createElement('h2');
-										title.innerText = 'Favorieten';
-										sectionLiked.appendChild(title);
+										const favTitle = document.createElement('h2');
+										favTitle.innerText = 'Favorieten';
+										sectionLiked.appendChild(favTitle);
 										sectionLiked.appendChild(favDOM);
 
 										main.insertBefore(sectionLiked, filter);

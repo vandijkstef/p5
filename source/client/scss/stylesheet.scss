@@ -140,6 +140,8 @@ body {
 	padding-top: 5em;
 	margin: 0;
 	transition: background-color 1s;
+	max-width: 100vw;
+	overflow-x: hidden;
 	& > header {
 		background-color: $white;
 		position: fixed;
@@ -184,7 +186,6 @@ body {
 	width: 100vw;
 	padding-top: 56.25%;
 	margin-top: -.2rem;
-	// overflow: hidden;
 	section {
 		display: flex;
 		justify-content: center;
