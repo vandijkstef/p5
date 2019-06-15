@@ -1,7 +1,6 @@
 import { Hero } from './hero.js';
 import { Renderer } from './Renderer.js';
 import { StoryDB } from './StoryDB.js';
-// import { Router } from './Router.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 	Renderer.set();
@@ -10,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const hero = document.querySelector('#hero');
 	hero.addEventListener('click', function(e) {
-		if (e.target !== this && !document.body.classList.contains('rendered')) {
-			document.body.classList.add('rendered');
+		if (e.target !== this && !hero.classList.contains('rendered')) {
+			hero.classList.add('rendered');
 			const DB = new StoryDB(() => {
 				DB.getAll().then((stories: any[]) => {
 					const main = document.createElement('main');

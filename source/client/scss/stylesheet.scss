@@ -1,9 +1,31 @@
 $maincolor: #4ed967;
+$maincolor-lighter: #7EFE94;
+$maincolor-light: #84F498;
+$maincolor-darker: #2CA241;
+$maincolor-dark: #386740;
+
 $blue: #362f90;
+$blue-lighter: #574BEC;
+$blue-light: #5C54BF;
+$blue-darker: #171347;
+$blue-dark: #131227;
+
 $pink: #EE3869;
+$pink-lighter: #FE5E89;
+$pink-light: #F9678E;
+$pink-darker: #B31942;
+$pink-dark: #702C3E;
+
 $grey: #F3E5D8;
+$grey-lighter: #FFF2E6;
+$grey-light: #FFFDFB;
+$grey-darker: #A09182;
+$grey-dark: #767471;
+
 $white: rgba(255, 255, 255, .9);
 $black: #231F20;
+$black-darker: #0B0607;
+$black-dark: #000000;
 
 $trans: .2s;
 $commonRadius: .4rem;
@@ -228,6 +250,11 @@ body {
 	width: 100vw;
 	padding-top: 56.25%;
 	margin-top: -.2rem;
+	&.rendered {
+		p {
+			display: block;
+		}
+	}
 	section {
 		display: flex;
 		justify-content: center;
@@ -272,6 +299,9 @@ body {
 		h2 {
 			// mix-blend-mode: color-dodge;
 			transition: font-size 1s;
+		}
+		p {
+			display: none;
 		}
 		img {
 			position: absolute;
@@ -452,6 +482,7 @@ fieldset {
 	scrollbar-width: none;
 	grid-gap: 2rem;
 	position: relative;
+	border-radius: $commonRadius * 3;
 	&.vertical {
 		flex-direction: column;
 		overflow-x: unset;
@@ -469,7 +500,8 @@ fieldset {
 		}
 	}
 	& > * {
-		min-width: 22vw;
+		min-width: 18vw;
+		box-shadow: 0 0.2rem 0.3rem -0.1rem rgba(0,0,0,0.6);
 		&:not(:last-of-type) {
 			margin-right: 1rem;
 		}
@@ -488,7 +520,6 @@ fieldset {
 
 #filter {
 	display: grid;
-	// grid-gap: 1rem;
 	padding: 1rem 0;
 	@media (min-width: 30em) and (max-width: 60em) {
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -544,10 +575,10 @@ fieldset {
 		.fav {
 			background-color: $pink;
 			svg * {
-				fill: lighten($pink, 35);
+				fill: $pink-darker;
 			}
 			&:hover {
-				background-color: lighten($pink, 10);
+				background-color: $pink-light;
 			}
 		}
 	}
