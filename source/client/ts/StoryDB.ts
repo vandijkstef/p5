@@ -6,7 +6,7 @@ export class StoryDB {
 		this.getStories()
 			.then((stories: [object]) => {
 				this.stories = stories;
-				this.parse(); // TODO: Parse on fetch
+				this.parse();
 				callback();
 			});
 	}

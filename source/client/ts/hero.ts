@@ -43,13 +43,8 @@ export class Hero {
 	}
 
 	public activate(this: Iblob) {
-		if (this.classList.contains('active')) {
-			// TODO: Make seperate back button
-			this.classList.remove('active');
-			this.image.style.top = parseInt(this.dataset.top, 10) * -1 + 175 + 'px';
-			this.image.style.left = parseInt(this.dataset.left, 10) * -1 + 175 + 'px';
-			document.body.id = '';
-		} else {
+		// TODO: Make seperate back button
+		if (!this.classList.contains('active')) {
 			this.classList.add('active');
 			this.image.style.top = parseInt(this.dataset.top, 10) * -1 + 3500 + 'px';
 			this.image.style.left = parseInt(this.dataset.left, 10) * -1 + 3500 + 'px';

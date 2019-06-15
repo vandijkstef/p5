@@ -24,7 +24,7 @@ app.set('views', 'views');
 app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({
-	extended: false
+	extended: false,
 }));
 app.use(bodyParser.json());
 
@@ -33,8 +33,8 @@ app.use(session({
 	resave: false,
 	saveUninitialized: true,
 	store: new FileStore(),
-	cookie: { secure: false }
-}))
+	cookie: { secure: false },
+}));
 
 app.use((req: any, res, next) => {
 	res.locals.title = 'Undefined';
@@ -48,7 +48,7 @@ app.use((req: any, res, next) => {
 	if (req.session.user) {
 		res.locals.user = JSON.parse(fs.readFileSync(userFile, 'utf8'));
 	}
-	
+
 	next();
 });
 

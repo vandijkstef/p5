@@ -1,5 +1,5 @@
 import { UITools } from './UI.js';
-import { vPanel } from './vPanel.js';
+import { VPanel } from './vPanel.js';
 
 export class Renderer {
 
@@ -11,8 +11,8 @@ export class Renderer {
 		if (infopanel) {
 			infopanel.addEventListener('click', () => {
 				infopanel.UI = new UITools();
-				infopanel.panel = new vPanel('Uw verhalen', [
-					infopanel.UI.CreateText('')
+				infopanel.panel = new VPanel('Uw verhalen', [
+					infopanel.UI.CreateText(''),
 				]);
 			});
 		}
@@ -22,7 +22,7 @@ export class Renderer {
 		return new Promise((resolve, reject) => {
 			const content = [];
 			const UI = new UITools();
-	
+
 			fetch('/favs')
 				.then((response) => {
 					return response.json();
@@ -30,7 +30,7 @@ export class Renderer {
 				.then((favData) => {
 					for (const entry of data) {
 						if (id === 'fav') {
-							if (favData.status == 'ok') {
+							if (favData.status === 'ok') {
 								if (!favData.favs.includes(entry.id)) {
 									continue;
 								}
@@ -39,11 +39,10 @@ export class Renderer {
 							}
 						}
 
-						const fav = UI.CreateHTML('<i class="fas fa-heart"></i>', null, null, 'button');
+						const favCount = Math.floor(Math.random() * 100);
+						const fav = UI.CreateHTML(`<i class="fas fa-heart"></i> <span>${favCount}</span>`, null, null, 'button');
 						fav.addEventListener('click', Renderer.favHandler);
 						fav.classList.add('fav');
-						
-						const favCount = Math.floor(Math.random() * 100);
 
 						const download = UI.CreateHTML('<i class="fas fa-cloud-download-alt"></i>', null, null, 'button');
 						download.addEventListener('click', Renderer.storeHandler);
@@ -51,29 +50,32 @@ export class Renderer {
 
 						const section = UI.Wrap([
 							UI.CreateText(entry.title, null, null, 'h3'),
-							UI.CreateText(new Date(entry.pubDate).toLocaleString(), null, null, 'p'),
-							UI.CreateHTML(`<i class="far fa-comment-alt"></i> ${entry['slash:comments']}`, null, null, 'p'),
-							fav,
-							download,
-							UI.CreateHTML(`<i class="fab fa-gratipay"></i> ${favCount}`, null, null, 'p')
+							UI.Wrap([
+								UI.CreateHTML(`<i class="far fa-comment-alt"></i> ${entry['slash:comments']}`, null, null, 'p'),
+								UI.CreateHTML(`<i class="fab fa-gratipay"></i> ${favCount}`, null, null, 'p'),
+							]),
+							UI.Wrap([
+								fav,
+								download,
+							], ['row']),
 						], null, null, 'section');
-						
+
 						section.classList.add('story');
 						section.dataset.id = entry.id;
 						section.dataset.pubdate = new Date(entry.pubDate).getTime();
 						section.dataset.favs = favCount;
 						section.dataset.comments = entry['slash:comments'];
 						section.dataset.length = entry['content:encoded'].length;
-						
-						if (favData.status == 'ok' && favData.favs.includes(entry.id)) {
+
+						if (favData.status === 'ok' && favData.favs.includes(entry.id)) {
 							section.dataset.myfav = '1';
 							section.classList.add('fav');
 							fav.classList.add('active');
 						}
-	
+
 						content.push(section);
-					};
-					
+					}
+
 					let classes = null;
 					if (id) {
 						classes = ['slide'];
@@ -93,42 +95,42 @@ export class Renderer {
 		return new Promise((resolve, reject) => {
 			const content = [];
 			const UI = new UITools();
-			
+
 			const commentsBtn = UI.CreateText('Reacties', null, null, 'button');
 			commentsBtn.dataset.sort = 'comments';
 			commentsBtn.addEventListener('click', Renderer.sortHandler);
 			content.push(commentsBtn);
-	
+
 			const favBtn = UI.CreateText('Likes', null, null, 'button');
 			favBtn.dataset.sort = 'favs';
 			favBtn.addEventListener('click', Renderer.sortHandler);
 			content.push(favBtn);
-	
+
 			const lengthBtn = UI.CreateText('Lengte', null, null, 'button');
 			lengthBtn.dataset.sort = 'length';
 			lengthBtn.addEventListener('click', Renderer.sortHandler);
 			content.push(lengthBtn);
-	
+
 			const dateBtn = UI.CreateText('Datum', null, null, 'button');
 			dateBtn.dataset.sort = 'pubdate';
 			dateBtn.addEventListener('click', Renderer.sortHandler);
 			content.push(dateBtn);
-	
+
 			if (document.body.classList.contains('user')) {
 				const myFavBtn = UI.CreateText('Mijn favorieten', null, null, 'button');
 				myFavBtn.dataset.sort = 'myfav';
 				myFavBtn.addEventListener('click', Renderer.sortHandler);
 				content.push(myFavBtn);
 			}
-	
+
 			const buttonWrap = UI.Wrap(content, null, null, 'div');
-			buttonWrap.id = "filter";
-	
+			buttonWrap.id = 'filter';
+
 			const section = UI.Wrap([
 				UI.CreateText('Alle verhalen', null, null, 'h2'),
-				buttonWrap
+				buttonWrap,
 			], null, 'filtersc', 'section');
-	
+
 			// target.appendChild(UI.Wrap([section], null, null, 'main'));
 			resolve(section);
 
@@ -139,7 +141,7 @@ export class Renderer {
 		const container = this.parentElement.parentElement.parentElement.querySelector('article');
 		const stories = document.body.querySelectorAll('main > article section');
 		const buttons = this.parentElement.parentElement.querySelectorAll('button');
-		
+
 		buttons.forEach((button) => {
 			button.classList.remove('active');
 			button.classList.remove('inv');
@@ -155,7 +157,7 @@ export class Renderer {
 		}
 
 		stories.forEach((story: HTMLElement) => {
-			let input = parseInt(story.dataset[this.dataset.sort]) || 0;
+			let input = parseInt(story.dataset[this.dataset.sort], 10) || 0;
 			if (input > 10000000000) {
 				input = input / 1000;
 			}
@@ -174,20 +176,20 @@ export class Renderer {
 				this.UI = new UITools();
 				const submit = this.UI.CreateText('Log in', null, null, 'button');
 				submit.addEventListener('click', Renderer.submitLogin);
-				this.panel = new vPanel('Login', [
+				this.panel = new VPanel('Login', [
 					this.UI.CreateInputText(
 						this.UI.CreateLabel('Naam'),
 						'name',
 						'text',
-						true
+						true,
 					),
 					this.UI.CreateInputText(
 						this.UI.CreateLabel('Wachtwoord'),
 						'password',
 						'password',
-						true
+						true,
 					),
-					submit
+					submit,
 				]);
 			} else {
 				this.panel.Enable();
@@ -200,7 +202,7 @@ export class Renderer {
 		// const panel = this.parentElement.parentElement;
 		const name = document.querySelector('[name=name]') as HTMLInputElement;
 		const pass = document.querySelector('[name=password]') as HTMLInputElement;
-		if (name.value.length == 0 && pass.value.length == 0) {
+		if (name.value.length === 0 && pass.value.length === 0) {
 			console.warn('missing input');
 		} else {
 			const API = new XMLHttpRequest();
@@ -212,11 +214,11 @@ export class Renderer {
 					window.location.reload();
 				}
 			};
-			
+
 			API.send(JSON.stringify({
 				name: name.value,
-				pass: pass.value
-			}))
+				pass: pass.value,
+			}));
 		}
 	}
 
@@ -235,7 +237,7 @@ export class Renderer {
 				}
 			};
 			API.send(JSON.stringify({
-				id: this.parentElement.dataset.id
+				id: this.parentElement.dataset.id,
 			}));
 		} else {
 			const userBtn = document.querySelector('#user') as HTMLElement;

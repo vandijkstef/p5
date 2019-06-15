@@ -1,24 +1,24 @@
 import { UITools } from './UI.js';
 
 interface IvPanelCloser extends HTMLElement {
-	panel?: vPanel;
+	panel?: VPanel;
 }
 
-export class vPanel {
+export class VPanel {
 	private DOM: HTMLElement;
 	private panel: HTMLElement;
 	private title: string;
 	private UI: UITools;
 
-	constructor(title: string, contents: Array<HTMLElement> = []) {
+	constructor(title: string, contents: HTMLElement[] = []) {
 		this.UI = new UITools();
-		
+
 		this.title = title;
 
 		this.DOM = document.createElement('div');
 		this.DOM.classList.add('vPanel');
 		this.DOM.addEventListener('click', this.Close);
-		
+
 		this.panel = document.createElement('div');
 		this.DOM.appendChild(this.panel);
 
@@ -36,7 +36,7 @@ export class vPanel {
 		closer.addEventListener('click', this.ClosePanel);
 	}
 
-	public AddContent(content: Array<HTMLElement> = [], refresh: boolean) {
+	public AddContent(content: HTMLElement[] = [], refresh: boolean) {
 		if (refresh) {
 			this.Clear();
 		}
@@ -52,13 +52,13 @@ export class vPanel {
 	}
 
 	private ClosePanel(this: IvPanelCloser, e: Event) {
-		if (e.target == this) {
+		if (e.target === this) {
 			this.panel.DOM.classList.add('disabled');
 		}
-	} 
+	}
 
 	private Close(this: HTMLElement, e: Event) {
-		if (e.target == this) {
+		if (e.target === this) {
 			this.classList.add('disabled');
 		}
 	}

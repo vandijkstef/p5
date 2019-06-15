@@ -10,17 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const hero = document.querySelector('#hero');
 	hero.addEventListener('click', function(e) {
-		if (e.target !== this) {
+		if (e.target !== this && !document.body.classList.contains('rendered')) {
+			document.body.classList.add('rendered');
 			const DB = new StoryDB(() => {
 				DB.getAll().then((stories: any[]) => {
-					console.log(stories);
 					const main = document.createElement('main');
 					document.body.appendChild(main);
 
 					Renderer.renderFilter().then((filter: HTMLElement) => {
 						main.appendChild(filter);
 						Renderer.renderStories(stories).then((storyDOM: HTMLElement) => {
-							main.appendChild(storyDOM);
+							filter.appendChild(storyDOM);
 							const filterBtn = filter.querySelectorAll('button');
 							if (filterBtn[1]) {
 								filterBtn[1].click();
@@ -54,6 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
 										sectionLiked.appendChild(favDOM);
 
 										main.insertBefore(sectionLiked, filter);
+										const bla = window as any;
+										if (bla.dragscroll) {
+											bla.dragscroll();
+										}
 									}
 								});
 							});
