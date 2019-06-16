@@ -5,7 +5,11 @@ export class UITools {
 	// Base
 	public CreateText(text: string, classes?: [string], id?: string, elementName: string = 'p') {
 		const element: any = this.Create(classes, id, elementName);
-		element.innerText = text;
+		if (typeof(text) === 'string') {
+			element.innerText = text;
+		} else {
+			element.appendChild(text);
+		}
 		return element;
 	}
 

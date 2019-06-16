@@ -39,6 +39,14 @@ export class Renderer {
 							}
 						}
 
+						const titleLink: any = UI.CreateLink(
+							UI.CreateText(entry.title, null, null, 'h3'),
+							`#${entry.id}`,
+						);
+						titleLink.dataset.id = entry.id;
+						titleLink.story = entry;
+						UI.addHandler(titleLink, this.renderSingle);
+
 						const favCount = Math.floor(Math.random() * 100);
 						const fav = UI.CreateHTML(`<i class="fas fa-heart"></i> <span>${favCount}</span>`, null, null, 'button');
 						fav.addEventListener('click', Renderer.favHandler);
@@ -49,7 +57,7 @@ export class Renderer {
 						download.classList.add('download');
 
 						const section = UI.Wrap([
-							UI.CreateText(entry.title, null, null, 'h3'),
+							titleLink,
 							UI.Wrap([
 								UI.CreateHTML(`<i class="far fa-comment-alt"></i> ${entry['slash:comments']}`, null, null, 'p'),
 								UI.CreateHTML(`<i class="fab fa-gratipay"></i> ${favCount}`, null, null, 'p'),
@@ -198,8 +206,45 @@ export class Renderer {
 		});
 	}
 
+	public static renderSingle(this: any) {
+		const UI = new UITools();
+
+		const hero = document.querySelector('#hero');
+		const main = document.querySelector('main');
+		hero.classList.add('hidden');
+		main.classList.add('hidden');
+
+		const content = document.createElement('div');
+		content.innerHTML = this.story['content:encoded'];
+
+		const back = UI.CreateLink('<-', '#home', null, 'back');
+		UI.addHandler(back, () => {
+			const storyDOM = document.querySelector('#single');
+			storyDOM.parentElement.removeChild(storyDOM);
+			hero.classList.remove('hidden');
+			main.classList.remove('hidden');
+		});
+
+		const story = UI.Wrap([
+			UI.Wrap([
+				UI.Wrap([
+					back,
+				]),
+				UI.Wrap([
+					UI.CreateText(this.story['slash:comments'], ['button']),
+					UI.CreateText('F', ['button']),
+					UI.CreateText('D', ['button']),
+				]),
+			]),
+			UI.Wrap([
+				UI.CreateText(this.story.title, null, null, 'h1'),
+				content,
+			], null, null, 'section'),
+		], null, 'single', 'section');
+		document.body.appendChild(story);
+	}
+
 	public static submitLogin(this: any) {
-		// const panel = this.parentElement.parentElement;
 		const name = document.querySelector('[name=name]') as HTMLInputElement;
 		const pass = document.querySelector('[name=password]') as HTMLInputElement;
 		if (name.value.length === 0 && pass.value.length === 0) {
