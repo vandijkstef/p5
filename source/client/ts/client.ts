@@ -57,6 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
 										if (bla.dragscroll) {
 											bla.dragscroll();
 										}
+									} else {
+										const bla = window as any;
+										if (bla.dragscroll) {
+											bla.dragscroll();
+										}
 									}
 								});
 							});

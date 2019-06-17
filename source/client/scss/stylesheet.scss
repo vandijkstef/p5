@@ -1,5 +1,12 @@
-@import url('/NexaRegular.otf');
-@import url('/NexaXBold.otf');
+@font-face {
+	font-family: Nexa;
+	src: url('/NexaRegular.woff2');
+}
+
+@font-face {
+	font-family: NexaXBold;
+	src: url('/NexaXBold.woff2');
+}
 
 $maincolor: #4ed967;
 $maincolor-lighter: #7EFE94;
@@ -52,7 +59,7 @@ $commonRadius: .4rem;
 }
 
 .hidden {
-	display: none;
+	display: none !important;
 }
 
 main {
@@ -65,7 +72,6 @@ main article {
 	margin: 0 auto;
 	grid-gap: 1rem;
 	@media (min-width: 50em) { 
-		padding: 1rem;
 		grid-template-columns: 1fr 1fr;
 	}
 	@media (min-width: 70em) {
@@ -117,6 +123,7 @@ h1, h2, h3, h4, h5 {
 	color: $maincolor;
 	max-width: 70rem;
 	margin: 0 auto;
+	font-family: NexaXBold, sans-serif;
 	font-weight: bold;
 }
 
@@ -177,7 +184,7 @@ a.button, button, input[type=submit], .btn {
 	// Defaults
 	@include radius;
 	padding: .3rem 2rem;
-	font-weight: 800;
+	// font-weight: 800;
 	font-size: 1.1em;
 	transition: $trans * 1.5;
 	text-decoration: none;
@@ -198,7 +205,6 @@ a.button, button, input[type=submit], .btn {
 		// Other button styles
 		@include createButtonStyle('action', $maincolor, $white);
 		@include createButtonStyle('active', $pink, $white);
-		// @include createButtonStyle('confirm', $, $textcolor-light);
 		@include createButtonStyle('error', red, $white);
 		@include createButtonStyle('disabled', $grey, $white);
 		&.disabled {
@@ -530,6 +536,7 @@ fieldset {
 		overflow-y: scroll;
 	}
 	&.sliding {
+		@include padding;
 		cursor: grab;
 		box-shadow: 
 		-1rem 0 1rem -1.3rem inset rgba(0, 0, 0, .6),
@@ -542,6 +549,10 @@ fieldset {
 	}
 	& > * {
 		min-width: 18vw;
+		@media (max-width: 70em) {
+			min-width: 20em;
+		}
+		
 		box-shadow: 0 0.2rem 0.3rem -0.1rem rgba(0,0,0,0.6);
 		&:not(:last-of-type) {
 			margin-right: 1rem;
@@ -562,29 +573,49 @@ fieldset {
 #filter {
 	display: grid;
 	padding: 1rem 0;
-	@media (min-width: 30em) and (max-width: 60em) {
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	button {
+		grid-column: span 2;
+		&:first-of-type, &:nth-of-type(2), &:nth-of-type(3), &:nth-of-type(4) {
+			grid-column: span 3;
+		}
+	}
+	@media (max-width: 30em) {
+		grid-gap: 1rem;
+	}
+	@media (max-width: 50em) {
+		grid-gap: .6rem;
+	}
+	@media (min-width: 50em) {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr;
 		button {
 			grid-column: span 2;
 			&:first-of-type, &:nth-of-type(2) {
+				grid-column: span 6;
+			}
+			&:nth-of-type(3), &:nth-of-type(4) {
 				grid-column: span 3;
 			}
 		}
 	}
-	@media (min-width: 60em) {
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-		max-width: 60em;
+	@media (min-width: 70em) {
+		max-width: 70em;
 		margin: 0 auto;
-		button {
-			&:first-of-type {
-				border-radius: $commonRadius 0 0 $commonRadius;
-			}
-			&:last-of-type {
-				border-radius: 0 $commonRadius $commonRadius 0;
-			}
-		}
 	}
+	// @media (min-width: 70em) {
+	// 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	// 	max-width: 60em;
+	// 	margin: 0 auto;
+	// 	button {
+	// 		&:first-of-type {
+	// 			border-radius: $commonRadius 0 0 $commonRadius;
+	// 		}
+	// 		&:last-of-type {
+	// 			border-radius: 0 $commonRadius $commonRadius 0;
+	// 		}
+	// 	}
+	// }
 	button {
 		padding: .6rem;
 		border-radius: 0;

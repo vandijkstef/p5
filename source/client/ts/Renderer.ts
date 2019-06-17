@@ -74,6 +74,7 @@ export class Renderer {
 						section.dataset.favs = favCount;
 						section.dataset.comments = entry['slash:comments'];
 						section.dataset.length = entry['content:encoded'].length;
+						section.dataset.season = Math.round(Math.random() * 2);
 
 						if (favData.status === 'ok' && favData.favs.includes(entry.id)) {
 							section.dataset.myfav = '1';
@@ -123,6 +124,21 @@ export class Renderer {
 			dateBtn.dataset.sort = 'pubdate';
 			dateBtn.addEventListener('click', Renderer.sortHandler);
 			content.push(dateBtn);
+
+			const summerBtn = UI.CreateHTML('<i class="fas fa-sun"></i>', ['action'], null, 'button');
+			summerBtn.dataset.filter = '0';
+			summerBtn.addEventListener('click', Renderer.filterHandler);
+			content.push(summerBtn);
+
+			const weekendBtn = UI.CreateHTML('<i class="fas fa-city"></i>', ['action'], null, 'button');
+			weekendBtn.dataset.filter = '1';
+			weekendBtn.addEventListener('click', Renderer.filterHandler);
+			content.push(weekendBtn);
+
+			const winterBtn = UI.CreateHTML('<i class="far fa-snowflake"></i>', ['action'], null, 'button');
+			winterBtn.dataset.filter = '2';
+			winterBtn.addEventListener('click', Renderer.filterHandler);
+			content.push(winterBtn);
 
 			if (document.body.classList.contains('user')) {
 				const myFavBtn = UI.CreateText('Mijn favorieten', null, null, 'button');
@@ -176,6 +192,29 @@ export class Renderer {
 				this.classList.add('inv');
 			}
 		});
+	}
+
+	public static filterHandler(this: any) {
+		if (this.classList.contains('inv')) {
+			this.classList.remove('inv');
+			// Enable items;
+			const stories = document.querySelectorAll('#filtersc article section');
+			stories.forEach((story: HTMLElement) => {
+				if (story.dataset.season === this.dataset.filter) {
+					story.classList.remove('hidden');
+				}
+			})
+		} else {
+			this.classList.add('inv');
+			// Disable items;
+			const stories = document.querySelectorAll('#filtersc article section');
+			stories.forEach((story: HTMLElement) => {
+				if (story.dataset.season === this.dataset.filter) {
+					console.log(story);
+					story.classList.add('hidden');
+				}
+			})
+		}
 	}
 
 	public static renderLogin(this: any) {
