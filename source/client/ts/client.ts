@@ -25,6 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
 								filterBtn[1].click();
 							}
 
+							const seasons: any = document.querySelectorAll('button.action');
+							switch(document.body.id) {
+								case 'summer':
+									seasons[1].click();
+									seasons[2].click();
+									break;
+								case 'weekend':
+									seasons[0].click();
+									seasons[2].click();
+									break;
+								case 'winter':
+									seasons[0].click();
+									seasons[1].click();
+									break;
+							}
+
 							const recommendedStories = [
 								stories[3],
 								stories[75],

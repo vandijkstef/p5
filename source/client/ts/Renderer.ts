@@ -48,7 +48,7 @@ export class Renderer {
 						UI.addHandler(titleLink, this.renderSingle);
 
 						const favCount = Math.floor(Math.random() * 100);
-						const fav = UI.CreateHTML(`<i class="fas fa-heart"></i> <span>${favCount}</span>`, null, null, 'button');
+						const fav = UI.CreateHTML(`<i class="fas fa-heart"></i>`, null, null, 'button');
 						fav.addEventListener('click', Renderer.favHandler);
 						fav.classList.add('fav');
 
@@ -56,11 +56,23 @@ export class Renderer {
 						download.addEventListener('click', Renderer.storeHandler);
 						download.classList.add('download');
 
+						const seasonID = Math.round(Math.random() * 2);
+						let season = 'fas fa-sun';
+						let seasonName = 'Zomer';
+						if (seasonID === 1) {
+							season = 'fas fa-city';
+							seasonName = 'Weekend';
+						} else if (seasonID === 2) {
+							season = 'far fa-snowflake';
+							seasonName = 'Winter';
+						}
+
 						const section = UI.Wrap([
 							titleLink,
 							UI.Wrap([
 								UI.CreateHTML(`<i class="far fa-comment-alt"></i> ${entry['slash:comments']}`, null, null, 'p'),
 								UI.CreateHTML(`<i class="fab fa-gratipay"></i> ${favCount}`, null, null, 'p'),
+								UI.CreateHTML(`<i class="${season}"></i> <span>${seasonName}</span>`, ['season'], null, 'p'),
 							]),
 							UI.Wrap([
 								fav,
@@ -74,7 +86,7 @@ export class Renderer {
 						section.dataset.favs = favCount;
 						section.dataset.comments = entry['slash:comments'];
 						section.dataset.length = entry['content:encoded'].length;
-						section.dataset.season = Math.round(Math.random() * 2);
+						section.dataset.season = seasonID;
 
 						if (favData.status === 'ok' && favData.favs.includes(entry.id)) {
 							section.dataset.myfav = '1';
@@ -163,12 +175,14 @@ export class Renderer {
 
 	public static sortHandler(this: HTMLElement) {
 		const container = this.parentElement.parentElement.parentElement.querySelector('article');
-		const stories = document.body.querySelectorAll('main > article section');
+		const stories = document.body.querySelectorAll('section#filtersc article > section');
 		const buttons = this.parentElement.parentElement.querySelectorAll('button');
 
 		buttons.forEach((button) => {
-			button.classList.remove('active');
-			button.classList.remove('inv');
+			if (!button.classList.contains('action')) {
+				button.classList.remove('active');
+				button.classList.remove('inv');
+			}
 		});
 		this.classList.add('active');
 
@@ -179,7 +193,7 @@ export class Renderer {
 		} else {
 			container.dataset.sort = this.dataset.sort;
 		}
-
+		console.log('the', stories);
 		stories.forEach((story: HTMLElement) => {
 			let input = parseInt(story.dataset[this.dataset.sort], 10) || 0;
 			if (input > 10000000000) {
@@ -198,12 +212,12 @@ export class Renderer {
 		if (this.classList.contains('inv')) {
 			this.classList.remove('inv');
 			// Enable items;
-			const stories = document.querySelectorAll('#filtersc article section');
+			const stories = document.querySelectorAll('#filtersc article > section');
 			stories.forEach((story: HTMLElement) => {
 				if (story.dataset.season === this.dataset.filter) {
 					story.classList.remove('hidden');
 				}
-			})
+			});
 		} else {
 			this.classList.add('inv');
 			// Disable items;
@@ -213,7 +227,7 @@ export class Renderer {
 					console.log(story);
 					story.classList.add('hidden');
 				}
-			})
+			});
 		}
 	}
 
