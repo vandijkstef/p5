@@ -22,6 +22,7 @@ app.set('views', 'views');
 // If the url matches a file it will send that file
 // Sending something (responding) ends the response cycle
 app.use(express.static('public'));
+app.use('/images', express.static('images'));
 
 app.use(bodyParser.urlencoded({
 	extended: false,
