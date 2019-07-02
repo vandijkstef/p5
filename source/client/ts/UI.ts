@@ -84,7 +84,7 @@ export class UITools {
 		return label;
 	}
 
-	public CreateForm(fields: Array<HTMLLabelElement>, action: string = window.location.href, method: string = 'POST', classes?: [string], id?: string) {
+	public CreateForm(fields: HTMLLabelElement[], action: string = window.location.href, method: string = 'POST', classes?: [string], id?: string) {
 		const submit = this.CreateInput(null, 'submit');
 		submit.type = 'submit';
 		fields.push(submit);
@@ -93,7 +93,7 @@ export class UITools {
 		form.action = action;
 		form.method = method;
 
-		return form
+		return form;
 	}
 
 	public CreateInput(name: string, type: string = 'text', required: boolean = false, value: string = '', placeholder: string = ' ', classes?: [string]) {
@@ -111,7 +111,6 @@ export class UITools {
 		input.placeholder = placeholder;
 		return input;
 	}
-
 
 	// CreateInputSet()
 
@@ -148,7 +147,7 @@ export class UITools {
 	// Rendering
 
 	// Render()
-	public Wrap(elements: Array<HTMLElement>, classes: [string] = [''], id: string = '', wrapperType: string = 'div') {
+	public Wrap(elements: HTMLElement[], classes: [string] = [''], id: string = '', wrapperType: string = 'div') {
 		const wrapper = this.Create(classes, id, wrapperType);
 		elements.forEach((element) => {
 			wrapper.appendChild(element);
