@@ -358,8 +358,9 @@ export class Renderer {
 	}
 
 	public static shareHandler(this: any) {
-		if (navigator.share) {
-			navigator.share({
+		const navi: any = navigator;
+		if (navi.share) {
+			navi.share({
 				title: this.story.title,
 				text: 'Lees nu ' + this.story.title,
 				url: 'https://stefvandijk.nl/',
