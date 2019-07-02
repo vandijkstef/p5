@@ -3,17 +3,10 @@
 		- Mobiel
 		- Tablet
 		- Desktop
-	- Huisstijl opdrachtgever (NS)
+	- Huisstijl opdrachtgever (Transavia)
 	- Unieke vormgeving verhalen
 	- Verhalen
-		- Vinden/Zoeken
-		- Lezen
-		- Opslaan (Favorite)
-		- Reactie
-			- Like
-			- Text
-			- Foto
-	- Offline
+	- Offline ?
 
 - Ontwerpdocument
 	- Concept
@@ -22,14 +15,14 @@
 
 TODO:
 - Categoriseren
-	- Pub date
+	- Pub date - OK
 	- ID -> Niet relevant
 	- Comments
-		- Text
-		- Likes
-		- Fotos
-	- Favorites (persoonlijk)
-	- Lengte
+		- Text - OK
+		- Likes - OK
+		- Fotos - ?
+	- Favorites (persoonlijk) - OK
+	- Lengte - OK
 - Wireframes
 
 
@@ -38,11 +31,11 @@ TODO:
 - Alle verhalen - Filter sort etc
 
 User Stories:
-- Gebruiker wil een willekeurig verhaal kunnen lezen
-- Gebruiker wil verhalen kunnen liken/opslaan
-- Gebruiker wil verhalen kunnen delen
-- Gebruiker wil verhalen lezen die hem/haar interesseren (aanbevolen)
-- Gebruiker wil soms kort, soms langer lezen
+- Gebruiker wil een willekeurig verhaal kunnen lezen - Needs style
+- Gebruiker wil verhalen kunnen liken/opslaan - Needs microanim
+- Gebruiker wil verhalen kunnen delen - OK
+- Gebruiker wil verhalen lezen die hem/haar interesseren (aanbevolen) - OK
+- Gebruiker wil soms kort, soms langer lezen - OK
 
 
 Vormg:
@@ -58,6 +51,3 @@ Vormg:
 
 - Mailen
 - Maandag/Dinsdag
-
-
-
