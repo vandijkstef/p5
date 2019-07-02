@@ -264,12 +264,12 @@ export class Renderer {
 	}
 
 	public static renderSingle(this: any, e) {
-		console.log(this.story);
 		switch (e.target.tagName) {
 			case 'SECTION':
 			case 'DIV':
 			case 'H3':
 			case 'A':
+			case 'P':
 				const UI = new UITools();
 
 				const hero = document.querySelector('#hero');
