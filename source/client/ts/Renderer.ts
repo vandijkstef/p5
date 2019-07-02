@@ -7,7 +7,8 @@ export class Renderer {
 		const user = document.querySelector('#user');
 		user.addEventListener('click', Renderer.renderLogin);
 
-		const infopanel = document.querySelector('button#info') as any;
+		const infopanel = document.querySelector('#logo') as any;
+		console.log(infopanel);
 		if (infopanel) {
 			infopanel.addEventListener('click', () => {
 				infopanel.UI = new UITools();
@@ -52,9 +53,10 @@ export class Renderer {
 						fav.addEventListener('click', Renderer.favHandler);
 						fav.classList.add('fav');
 
-						const download = UI.CreateHTML('<i class="fas fa-cloud-download-alt"></i>', null, null, 'button');
-						download.addEventListener('click', Renderer.storeHandler);
-						download.classList.add('download');
+						const share = UI.CreateHTML('<i class="fas fa-share-alt"></i>', null, null, 'button');
+						share.story = entry;
+						share.classList.add('share');
+						share.addEventListener('click', Renderer.shareHandler);
 
 						const seasonID = Math.round(Math.random() * 2);
 						let season = 'fas fa-sun';
@@ -76,11 +78,13 @@ export class Renderer {
 							]),
 							UI.Wrap([
 								fav,
-								download,
+								share,
 							], ['row']),
 						], null, null, 'section');
 
 						section.classList.add('story');
+						section.story = entry;
+						UI.addHandler(section, this.renderSingle);
 						section.dataset.id = entry.id;
 						section.dataset.pubdate = new Date(entry.pubDate).getTime();
 						section.dataset.favs = favCount;
@@ -259,42 +263,52 @@ export class Renderer {
 		});
 	}
 
-	public static renderSingle(this: any) {
-		const UI = new UITools();
+	public static renderSingle(this: any, e) {
+		console.log(this.story);
+		switch (e.target.tagName) {
+			case 'SECTION':
+			case 'DIV':
+			case 'H3':
+			case 'A':
+				const UI = new UITools();
 
-		const hero = document.querySelector('#hero');
-		const main = document.querySelector('main');
-		hero.classList.add('hidden');
-		main.classList.add('hidden');
+				const hero = document.querySelector('#hero');
+				const main = document.querySelector('main');
+				hero.classList.add('hidden');
+				main.classList.add('hidden');
 
-		const content = document.createElement('div');
-		content.innerHTML = this.story['content:encoded'];
+				const content = document.createElement('div');
+				content.innerHTML = this.story['content:encoded'];
 
-		const back = UI.CreateLink('<-', '#home', null, 'back');
-		UI.addHandler(back, () => {
-			const storyDOM = document.querySelector('#single');
-			storyDOM.parentElement.removeChild(storyDOM);
-			hero.classList.remove('hidden');
-			main.classList.remove('hidden');
-		});
+				const back = UI.CreateLink('<-', '#home', null, 'back');
+				UI.addHandler(back, () => {
+					const storyDOM = document.querySelector('#single');
+					storyDOM.parentElement.removeChild(storyDOM);
+					hero.classList.remove('hidden');
+					main.classList.remove('hidden');
+				});
 
-		const story = UI.Wrap([
-			UI.Wrap([
-				UI.Wrap([
-					back,
-				]),
-				UI.Wrap([
-					UI.CreateText(this.story['slash:comments'], ['button']),
-					UI.CreateText('F', ['button']),
-					UI.CreateText('D', ['button']),
-				]),
-			]),
-			UI.Wrap([
-				UI.CreateText(this.story.title, null, null, 'h1'),
-				content,
-			], null, null, 'section'),
-		], null, 'single', 'section');
-		document.body.appendChild(story);
+				const story = UI.Wrap([
+					UI.Wrap([
+						UI.Wrap([
+							back,
+						]),
+						UI.Wrap([
+							UI.CreateText(this.story['slash:comments'], ['button']),
+							UI.CreateText('F', ['button']),
+							UI.CreateText('D', ['button']),
+						]),
+					]),
+					UI.Wrap([
+						UI.CreateText(this.story.title, null, null, 'h1'),
+						content,
+					], null, null, 'section'),
+				], null, 'single', 'section');
+				document.body.appendChild(story);
+				break;
+			default:
+				break;
+		}
 	}
 
 	public static submitLogin(this: any) {
@@ -343,8 +357,16 @@ export class Renderer {
 		}
 	}
 
-	public static storeHandler(this: HTMLElement) {
-		console.log(this);
+	public static shareHandler(this: any) {
+		if (navigator.share) {
+			navigator.share({
+				title: this.story.title,
+				text: 'Lees nu ' + this.story.title,
+				url: 'https://stefvandijk.nl/',
+			});
+		} else {
+			console.log(this);
+		}
 	}
 
 }
