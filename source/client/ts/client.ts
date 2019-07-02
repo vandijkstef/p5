@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 							}
 
 							const seasons: any = document.querySelectorAll('button.action');
-							switch(document.body.id) {
+							switch (document.body.id) {
 								case 'summer':
 									seasons[1].click();
 									seasons[2].click();

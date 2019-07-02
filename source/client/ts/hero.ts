@@ -7,9 +7,15 @@ export class Hero {
 	public blobs: NodeListOf<HTMLElement>;
 
 	constructor(blobSelector: string) {
+		document.querySelector('#hero').classList.add('hidden');
+
+		if (window.innerWidth < 800) {
+			console.warn('Handle mobile hero');
+			return;
+		}
+
 		this.blobs = document.querySelectorAll(blobSelector);
 		this.blobs.forEach((blob: Iblob, i) => {
-			// TODO: MinMax Top/Left
 			const top = (blob.clientHeight / 100) + Math.random() * 50 + 150;
 			const left = (blob.parentElement.clientWidth / 100) * (25 * i) + Math.random() * 150;
 
@@ -43,7 +49,6 @@ export class Hero {
 	}
 
 	public activate(this: Iblob) {
-		// TODO: Make seperate back button
 		if (!this.classList.contains('active')) {
 			this.classList.add('active');
 			this.image.style.top = parseInt(this.dataset.top, 10) * -1 + 3500 + 'px';

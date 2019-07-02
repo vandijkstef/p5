@@ -6,9 +6,13 @@ export class Renderer {
 	public static set() {
 		const user = document.querySelector('#user');
 		user.addEventListener('click', Renderer.renderLogin);
+		const login = document.querySelector('[href="#login"]');
+		login.addEventListener('click', Renderer.renderLogin);
 
-		const infopanel = document.querySelector('#logo') as any;
-		console.log(infopanel);
+		const toHero = document.querySelector('[href="#hero"]');
+		toHero.addEventListener('click', Renderer.toHero);
+
+		const infopanel = document.querySelector('#info') as any;
 		if (infopanel) {
 			infopanel.addEventListener('click', () => {
 				infopanel.UI = new UITools();
@@ -270,41 +274,43 @@ export class Renderer {
 			case 'H3':
 			case 'A':
 			case 'P':
-				const UI = new UITools();
+				if (!document.querySelector('#single')) {
+					const UI = new UITools();
 
-				const hero = document.querySelector('#hero');
-				const main = document.querySelector('main');
-				hero.classList.add('hidden');
-				main.classList.add('hidden');
+					const hero = document.querySelector('#hero');
+					const main = document.querySelector('main');
+					hero.classList.add('hidden');
+					main.classList.add('hidden');
 
-				const content = document.createElement('div');
-				content.innerHTML = this.story['content:encoded'];
+					const content = document.createElement('div');
+					content.innerHTML = this.story['content:encoded'];
 
-				const back = UI.CreateLink('<-', '#home', null, 'back');
-				UI.addHandler(back, () => {
-					const storyDOM = document.querySelector('#single');
-					storyDOM.parentElement.removeChild(storyDOM);
-					hero.classList.remove('hidden');
-					main.classList.remove('hidden');
-				});
-
-				const story = UI.Wrap([
-					UI.Wrap([
+					const back = UI.CreateLink('<-', '#home', null, 'back');
+					UI.addHandler(back, () => {
+						const storyDOM = document.querySelector('#single');
+						storyDOM.parentElement.removeChild(storyDOM);
+						hero.classList.remove('hidden');
+						main.classList.remove('hidden');
+					});
+					const story = UI.Wrap([
 						UI.Wrap([
-							back,
+							UI.Wrap([
+								back,
+							]),
+							UI.Wrap([
+								UI.CreateText(this.story['slash:comments'], ['button']),
+								UI.CreateText('F', ['button']),
+								UI.CreateText('D', ['button']),
+							]),
 						]),
 						UI.Wrap([
-							UI.CreateText(this.story['slash:comments'], ['button']),
-							UI.CreateText('F', ['button']),
-							UI.CreateText('D', ['button']),
-						]),
-					]),
-					UI.Wrap([
-						UI.CreateText(this.story.title, null, null, 'h1'),
-						content,
-					], null, null, 'section'),
-				], null, 'single', 'section');
-				document.body.appendChild(story);
+							UI.CreateText(this.story.title, null, null, 'h1'),
+							content,
+						], null, null, 'section'),
+					], null, 'single', 'section');
+					document.body.appendChild(story);
+					window.scrollTo(0, 0);
+				}
 				break;
 			default:
 				break;
@@ -368,6 +374,12 @@ export class Renderer {
 		} else {
 			console.log(this);
 		}
+	}
+
+	public static toHero(this: HTMLElement) {
+		const hero = document.querySelector('#hero');
+		hero.classList.remove('hidden');
+		this.parentElement.parentElement.removeChild(this.parentElement);
 	}
 
 }

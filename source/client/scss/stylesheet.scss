@@ -209,6 +209,7 @@ a.button, button, input[type=submit], .btn {
 		@include createButtonStyle('active', $pink, $white);
 		@include createButtonStyle('error', red, $white);
 		@include createButtonStyle('disabled', $grey, $white);
+		@include createButtonStyle('subtle', $grey-darker, $grey-lighter);
 		&.disabled {
 			cursor: not-allowed;
 		}
@@ -644,27 +645,14 @@ fieldset {
 		max-width: 70em;
 		margin: 0 auto;
 	}
-	// @media (min-width: 70em) {
-	// 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-	// 	max-width: 60em;
-	// 	margin: 0 auto;
-	// 	button {
-	// 		&:first-of-type {
-	// 			border-radius: $commonRadius 0 0 $commonRadius;
-	// 		}
-	// 		&:last-of-type {
-	// 			border-radius: 0 $commonRadius $commonRadius 0;
-	// 		}
-	// 	}
-	// }
 	button {
 		padding: .6rem;
 		border-radius: 0;
 	}
 }
 
-#user {
-	padding: .3rem .8rem;
+#user, #info {
+	padding: .3rem .4rem;
 	font-size: 2em;
 	display: flex;
 	justify-content: center;
@@ -673,6 +661,10 @@ fieldset {
 		margin-top: .2rem;
 		margin-left: .8rem;
 	}
+}
+
+#info {
+	margin-right: .2em; 
 }
 
 .story {
