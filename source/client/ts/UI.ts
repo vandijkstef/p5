@@ -133,6 +133,18 @@ export class UITools {
 		return element;
 	}
 
+	public addSafeClickHandler(element: HTMLElement, handler: EventListener) {
+		element.addEventListener('mousedown', (e: Event) => {
+			console.log('down');
+		});
+		element.addEventListener('mousemove', (e: Event) => {
+			console.log('move');
+		});
+		element.addEventListener('mouseup', (e: Event) => {
+			console.log('up');
+		});
+	}
+
 	// Rendering
 
 	// Render()
