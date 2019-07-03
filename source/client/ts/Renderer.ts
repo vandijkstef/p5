@@ -4,14 +4,9 @@ import { VPanel } from './vPanel.js';
 export class Renderer {
 
 	public static set() {
+		// Header
 		const user = document.querySelector('#user');
 		user.addEventListener('click', Renderer.renderLogin);
-		const login = document.querySelector('[href="#login"]');
-		login.addEventListener('click', Renderer.renderLogin);
-
-		const toHero = document.querySelector('[href="#hero"]');
-		toHero.addEventListener('click', Renderer.toHero);
-
 		const infopanel = document.querySelector('#info') as any;
 		if (infopanel) {
 			infopanel.addEventListener('click', () => {
@@ -21,6 +16,19 @@ export class Renderer {
 				]);
 			});
 		}
+
+		// Onpage
+		const login = document.querySelector('[href="#login"]');
+		if (login) {
+			login.addEventListener('click', Renderer.renderLogin);
+		}
+		const toHero = document.querySelector('[href="#hero"]');
+		if (toHero) {
+			toHero.addEventListener('click', Renderer.toHero);
+			const hero = document.querySelector('#hero');
+			hero.classList.add('hidden');
+		}
+
 	}
 
 	public static renderStories(data, id?: string): any {
@@ -379,7 +387,7 @@ export class Renderer {
 	public static toHero(this: HTMLElement) {
 		const hero = document.querySelector('#hero');
 		hero.classList.remove('hidden');
-		this.parentElement.parentElement.removeChild(this.parentElement);
+		this.parentElement.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement.parentElement);
 	}
 
 }

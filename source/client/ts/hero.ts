@@ -7,7 +7,6 @@ export class Hero {
 	public blobs: NodeListOf<HTMLElement>;
 
 	constructor(blobSelector: string) {
-		document.querySelector('#hero').classList.add('hidden');
 
 		if (window.innerWidth < 800) {
 			console.warn('Handle mobile hero');

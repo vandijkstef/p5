@@ -33,6 +33,7 @@ $grey-darker: #A09182;
 $grey-dark: #767471;
 
 $white: rgba(255, 255, 255, .9);
+$white-light: rgba(255, 255, 255, .75);
 $black: #231F20;
 $black-darker: #0B0607;
 $black-dark: #000000;
@@ -40,12 +41,15 @@ $black-dark: #000000;
 $trans: .2s;
 $commonRadius: .4rem;
 
+$tablet: 50em;
+$desktop: 70em;
+
 @mixin padding {
 	padding: .75rem 1rem;
-	@media (min-width: 50em) {
+	@media (min-width: $tablet) {
 		padding: 1.25rem 1.5rem;
 	}
-	@media (min-width: 70em) {
+	@media (min-width: $desktop) {
 		padding: 1.75rem 2rem;
 	}
 }
@@ -72,12 +76,12 @@ main article {
 	margin: 0 auto;
 	grid-gap: 1rem;
 	grid-row-gap: 2rem;
-	@media (min-width: 50em) { 
+	@media (min-width: $tablet) { 
 		grid-template-columns: 1fr 1fr;
 	}
-	@media (min-width: 70em) {
+	@media (min-width: $desktop) {
 		grid-template-columns: 1fr 1fr 1fr;
-		max-width: 70em;
+		max-width: $desktop;
 	}
 	// @media (min-width: 90em) {
 	// 	grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -88,14 +92,14 @@ main article {
 main > section {
 	@include padding;
 	// padding: 0;
-	@media (min-width: 50em) {
+	@media (min-width: $tablet) {
 		padding-top: 1.5rem;
 		padding-bottom: 1.5rem;
 	}
 	position: relative;
 	z-index: 90;
-	// @media (min-width: 70em) {
-	// 	max-width: 70em;
+	// @media (min-width: $desktop) {
+	// 	max-width: $desktop;
 	// 	margin: 0 auto;
 	// }
 	&:nth-of-type(2n - 1) {
@@ -193,6 +197,7 @@ a.button, button, input[type=submit], .btn {
 	text-align: center;
 	border: none;
 	cursor: pointer;
+	display: inline-block;
 	&:not(.default) {
 		// border: solid; // Width is defined in the _buttonStyle()
 		&:hover:not(:disabled), &:focus:not(:disabled) {
@@ -226,12 +231,12 @@ body {
 	overflow-x: hidden;
 	& > header {
 		background-color: $white;
-		@media (min-width: 50em) {
-			// background-color: red;
+		@media (min-width: $tablet) {
+			background-color: red;
 			testcase: tablet;
 		}
-		@media (min-width: 70em) {
-			// background-color: green;
+		@media (min-width: $desktop) {
+			background-color: green;
 			testcase: desktop;
 		}
 		position: fixed;
@@ -266,6 +271,38 @@ body {
 			margin: 0;
 			display: flex;
 			list-style: none;
+		}
+	}
+}
+
+.imaged {
+	position: relative;
+	overflow: hidden;
+	img {
+		position: absolute;
+		z-index: -10;
+		top: 23%;
+		left: 25%;
+		transform: translate(-25%, -25%);
+		width: 130vw;
+	}
+}
+
+#explain {
+	@media (min-width: $tablet) {
+		padding-top: 4em;
+		padding-bottom: 4em;
+	}
+	& > section {
+		display: grid;
+		grid-template-columns: 25em;
+		max-width: 50em;
+		margin: 0 auto;
+		& > div {
+			@include padding;
+			border-radius: $commonRadius;
+			background-color: $white-light;
+			max-width: 31em;
 		}
 	}
 }
@@ -387,7 +424,7 @@ body {
 		background-color: white;
 		padding: 1rem;
 		animation: fadeInDelay $trans * 2 ease-out;
-		max-width: 50em;
+		max-width: $tablet;
 		width: 100%;
 		margin: 0 1rem;
 		min-height: 50vh;
@@ -556,7 +593,7 @@ fieldset {
 	}
 	& > * {
 		min-width: 18vw;
-		@media (max-width: 70em) {
+		@media (max-width: $desktop) {
 			min-width: 20em;
 		}
 		
@@ -619,13 +656,13 @@ fieldset {
 	@media (max-width: 30em) {
 		grid-gap: .6rem;
 	}
-	@media (max-width: 50em) {
+	@media (max-width: $tablet) {
 		grid-gap: .3rem;
 		button:nth-of-type(5) {
 			border-radius: 0 0 0 $commonRadius;
 		}
 	}
-	@media (min-width: 50em) {
+	@media (min-width: $tablet) {
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr;
 		button {
@@ -641,8 +678,8 @@ fieldset {
 			}
 		}
 	}
-	@media (min-width: 70em) {
-		max-width: 70em;
+	@media (min-width: $desktop) {
+		max-width: $desktop;
 		margin: 0 auto;
 	}
 	button {
@@ -664,7 +701,7 @@ fieldset {
 }
 
 #info {
-	margin-right: .2em; 
+	margin-right: .2em;
 }
 
 .story {
@@ -725,10 +762,10 @@ fieldset {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		margin: 0 -1rem -.75rem;
-		@media (min-width: 50em) {
+		@media (min-width: $tablet) {
 			margin: 0 -1.5rem -1.25rem;
 		}
-		@media (min-width: 70em) {
+		@media (min-width: $desktop) {
 			margin: 0 -2rem -1.75rem;
 		}
 		button {
