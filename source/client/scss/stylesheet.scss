@@ -282,9 +282,10 @@ body {
 		position: absolute;
 		z-index: -10;
 		top: 23%;
-		left: 25%;
-		transform: translate(-25%, -25%);
-		width: 130vw;
+		left: 50%;
+		transform: translate(-50%, -25%);
+		min-width: 130vw;
+		height: 100vh;
 	}
 }
 
@@ -292,6 +293,7 @@ body {
 	@media (min-width: $tablet) {
 		padding-top: 4em;
 		padding-bottom: 4em;
+		height: calc(100vh - 12.5em);
 	}
 	& > section {
 		display: grid;
@@ -302,7 +304,13 @@ body {
 			@include padding;
 			border-radius: $commonRadius;
 			background-color: $white-light;
-			max-width: 31em;
+			width: 31em;
+			max-width: 100vw;
+			@media (max-width: $tablet) {
+				p {
+					padding-right: .75em;
+				}
+			}
 		}
 	}
 }
@@ -452,9 +460,14 @@ body {
 
 label {
 	font-weight: normal;
-	display: block;
+	display: flex;
+	flex-direction: column;
 	font-size: 1.2em;
 	cursor: pointer;
+	&.inline {
+		flex-direction: row;
+		align-items: center;
+	}
 	input:not([type=submit]), textarea {
 		font-size: 1em;
 		margin: 0;
@@ -463,6 +476,7 @@ label {
 	input[type=radio], input[type=checkbox] {
 		margin-right: .5em;
 		margin-bottom: 0;
+		order: -1;
 	}
 }
 input:not([type=submit]), textarea, select {
@@ -688,6 +702,30 @@ fieldset {
 	}
 }
 
+.user #filter {
+	button {
+		&:nth-of-type(3) {
+			grid-column: span 6;
+		}
+		&:nth-of-type(5) {
+			grid-column: span 3;
+		}
+		&:nth-of-type(6) {
+			border-radius: 0 0 0 $commonRadius;
+		}
+	}
+	@media (min-width: $tablet) {
+		button {
+			&:nth-of-type(3), &:nth-of-type(4), &:nth-of-type(5) {
+				grid-column: span 4;
+			}
+			&:nth-of-type(6) {
+				grid-column: 7 / 9;
+			}
+		}
+	}
+}
+
 #user, #info {
 	padding: .3rem .4rem;
 	font-size: 2em;
@@ -782,16 +820,6 @@ fieldset {
 			span {
 				margin-left: -2rem;
 			}
-			&.download {
-				svg * {
-					fill: adjust-hue(lighten($blue, 50), 5%);
-				}
-				&.active {
-					svg * {
-						fill: lighten($blue, 80);
-					}
-				}
-			}
 		}
 	}
 	.season {
@@ -810,6 +838,16 @@ fieldset {
 		&:focus {
 			outline: none;
 		}
+	}
+}
+
+button.fav.active {
+	background-color: $pink;
+	svg * {
+		fill: $pink-darker;
+	}
+	&:hover {
+		background-color: $pink-light;
 	}
 }
 
