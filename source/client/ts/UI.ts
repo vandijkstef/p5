@@ -80,6 +80,9 @@ export class UITools {
 
 	public CreateInputText(label: HTMLLabelElement, name: string, type: string = 'text', required: boolean = false, value: string = '', placeholder: string = ' ', classes?: [string]) {
 		const input = this.CreateInput(name, type, required, value, placeholder, classes);
+		if (type === 'checkbox' || type === 'radio') {
+			label.classList.add('inline');
+		}
 		label.appendChild(input);
 		return label;
 	}
