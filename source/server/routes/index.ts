@@ -13,7 +13,7 @@ router.on('mount', (parent) => {
 });
 
 router.use((req, res, next) => {
-	res.locals.title = 'Index';
+	res.locals.title = 'Inspireer uzelf | Transavia.com';
 	next();
 });
 
@@ -61,6 +61,16 @@ router.post('/fav', (req: any, res) => {
 				userData.favs.push(req.body.id);
 				fs.writeFileSync(userFile, JSON.stringify(userData));
 				res.send(JSON.stringify({status: 'ok'}));
+			} else if (req.body.remove) {
+				const newFavs = [];
+				userData.favs.forEach((fav) => {
+					if (fav !== req.body.id) {
+						newFavs.push(fav);
+					}
+				});
+				userData.favs = newFavs;
+				fs.writeFileSync(userFile, JSON.stringify(userData));
+				res.send(JSON.stringify({status: 'removed'}));
 			} else {
 				res.send(JSON.stringify({status: 'double'}));
 			}
@@ -78,12 +88,17 @@ router.post('/login', (req: any, res) => {
 	} else {
 		const userFile = `./db/${req.body.name}.json`;
 		if (!fs.existsSync(userFile)) {
-			fs.writeFileSync(userFile, JSON.stringify({
-				name: req.body.name,
-				pass: md5(req.body.pass)
-			}));
-			req.session.user = req.body.name;
-			res.send(JSON.stringify({status: 'new'}));
+			if (req.body.newuser) {
+				fs.writeFileSync(userFile, JSON.stringify({
+					name: req.body.name,
+					pass: md5(req.body.pass),
+					email: req.body.email,
+				}));
+				req.session.user = req.body.name;
+				res.send(JSON.stringify({status: 'new'}));
+			} else {
+				res.send(JSON.stringify({status: 'unknown'}));
+			}
 		} else {
 			const userData = JSON.parse(fs.readFileSync(userFile, 'utf8'));
 			if (md5(req.body.pass) === userData.pass) {
