@@ -58,7 +58,6 @@ export class Renderer {
 						);
 						titleLink.dataset.id = entry.id;
 						titleLink.story = entry;
-						UI.addHandler(titleLink, this.renderSingle);
 
 						const favCount = Math.floor(Math.random() * 100);
 						const fav = UI.CreateHTML(`<i class="fas fa-heart"></i>`, null, null, 'button');
@@ -143,6 +142,13 @@ export class Renderer {
 			favBtn.addEventListener('click', Renderer.sortHandler);
 			content.push(favBtn);
 
+			if (document.body.classList.contains('user')) {
+				const myFavBtn = UI.CreateText('Mijn favorieten', null, null, 'button');
+				myFavBtn.dataset.sort = 'myfav';
+				myFavBtn.addEventListener('click', Renderer.sortHandler);
+				content.push(myFavBtn);
+			}
+
 			const lengthBtn = UI.CreateText('Lengte', null, null, 'button');
 			lengthBtn.dataset.sort = 'length';
 			lengthBtn.addEventListener('click', Renderer.sortHandler);
@@ -167,13 +173,6 @@ export class Renderer {
 			winterBtn.dataset.filter = '2';
 			winterBtn.addEventListener('click', Renderer.filterHandler);
 			content.push(winterBtn);
-
-			if (document.body.classList.contains('user')) {
-				const myFavBtn = UI.CreateText('Mijn favorieten', null, null, 'button');
-				myFavBtn.dataset.sort = 'myfav';
-				myFavBtn.addEventListener('click', Renderer.sortHandler);
-				content.push(myFavBtn);
-			}
 
 			const buttonWrap = UI.Wrap(content, null, null, 'div');
 			buttonWrap.id = 'filter';
@@ -251,23 +250,50 @@ export class Renderer {
 		return new Promise((resolve, reject) => {
 			if (!this.panel) {
 				this.UI = new UITools();
-				const submit = this.UI.CreateText('Log in', null, null, 'button');
-				submit.addEventListener('click', Renderer.submitLogin);
-				this.panel = new VPanel('Login', [
-					this.UI.CreateInputText(
-						this.UI.CreateLabel('Naam'),
-						'name',
-						'text',
-						true,
-					),
-					this.UI.CreateInputText(
-						this.UI.CreateLabel('Wachtwoord'),
-						'password',
-						'password',
-						true,
-					),
-					submit,
-				]);
+				if (!document.body.classList.contains('user')) {
+					const submit = this.UI.CreateText('Log in', null, null, 'button');
+					submit.addEventListener('click', Renderer.submitLogin);
+					const email = this.UI.CreateInputText(
+						this.UI.CreateLabel('Emailadres'),
+						'email',
+						'email',
+					);
+					email.classList.add('hidden');
+					const newUser = this.UI.CreateInputText(
+						this.UI.CreateLabel('Nieuwe gebruiker'),
+						'newuser',
+						'checkbox',
+					);
+					newUser.querySelector('input').addEventListener('change', () => {
+						email.classList.toggle('hidden');
+					});
+					this.panel = new VPanel('Login', [
+						this.UI.CreateInputText(
+							this.UI.CreateLabel('Naam'),
+							'name',
+							'text',
+							true,
+						),
+						this.UI.CreateInputText(
+							this.UI.CreateLabel('Wachtwoord'),
+							'password',
+							'password',
+							true,
+						),
+						newUser,
+						email,
+						submit,
+					]);
+				} else {
+					const username = this.querySelector('span').innerText;
+					const logout = this.UI.CreateText('Log uit', null, null, 'button');
+					logout.addEventListener('click', () => {
+						window.location.href = '/logout';
+					});
+					this.panel = new VPanel(username, [
+						logout,
+					]);
+				}
 			} else {
 				this.panel.Enable();
 			}
@@ -293,22 +319,33 @@ export class Renderer {
 					const content = document.createElement('div');
 					content.innerHTML = this.story['content:encoded'];
 
-					const back = UI.CreateLink('<-', '#home', null, 'back');
+					const back = UI.CreateHTML('<i class="fas fa-angle-left"></i>', null, null, 'button');
+					// const back = UI.CreateLink('<-', '#home', null, 'back');
 					UI.addHandler(back, () => {
 						const storyDOM = document.querySelector('#single');
 						storyDOM.parentElement.removeChild(storyDOM);
 						hero.classList.remove('hidden');
 						main.classList.remove('hidden');
 					});
+
+					const comments = UI.CreateHTML(`<i class="fas fa-comment"></i> ${this.story['slash:comments']}`, null, null, 'button');
+
+					const fav = UI.CreateHTML(`<i class="fas fa-heart"></i>`, null, null, 'button');
+					fav.addEventListener('click', Renderer.favHandlerSingle);
+					fav.classList.add('fav');
+					console.log(this);
+					if (this.classList.contains('fav')) {
+						fav.classList.add('active');
+					}
+
 					const story = UI.Wrap([
 						UI.Wrap([
 							UI.Wrap([
 								back,
 							]),
 							UI.Wrap([
-								UI.CreateText(this.story['slash:comments'], ['button']),
-								UI.CreateText('F', ['button']),
-								UI.CreateText('D', ['button']),
+								comments,
+								fav,
 							]),
 						]),
 						UI.Wrap([
@@ -328,6 +365,8 @@ export class Renderer {
 	public static submitLogin(this: any) {
 		const name = document.querySelector('[name=name]') as HTMLInputElement;
 		const pass = document.querySelector('[name=password]') as HTMLInputElement;
+		const newUser = document.querySelector('[name=newuser]') as HTMLInputElement;
+		const email = document.querySelector('[name=email]') as HTMLInputElement;
 		if (name.value.length === 0 && pass.value.length === 0) {
 			console.warn('missing input');
 		} else {
@@ -338,12 +377,16 @@ export class Renderer {
 				const res = JSON.parse(this.response);
 				if (res.status === 'ok' || res.status === 'new') {
 					window.location.reload();
+				} else {
+					console.warn(res);
 				}
 			};
 
 			API.send(JSON.stringify({
 				name: name.value,
 				pass: pass.value,
+				newuser: newUser.checked,
+				email: email.value,
 			}));
 		}
 	}
@@ -352,23 +395,32 @@ export class Renderer {
 		if (document.body.classList.contains('user')) {
 			const button = this;
 			const API = new XMLHttpRequest();
+			const remove = this.classList.contains('active') ? true : false;
 			API.open('POST', '/fav');
 			API.setRequestHeader('Content-Type', 'application/json');
 			API.onload = function() {
 				const res = JSON.parse(this.response);
 				if (res.status === 'ok') {
-					button.parentElement.dataset.myfav = '1';
-					button.parentElement.classList.add('fav');
+					button.parentElement.parentElement.dataset.myfav = '1';
 					button.classList.add('active');
+				} else if (res.status === 'removed') {
+					button.parentElement.parentElement.dataset.myfav = '0';
+					button.classList.remove('active');
 				}
 			};
+			console.log(this.parentElement.parentElement.dataset);
 			API.send(JSON.stringify({
-				id: this.parentElement.dataset.id,
+				id: this.parentElement.parentElement.dataset.id,
+				remove: `${remove}`,
 			}));
 		} else {
 			const userBtn = document.querySelector('#user') as HTMLElement;
 			userBtn.click();
 		}
+	}
+
+	public static favHandlerSingle(this: any) {
+		console.log('fav single TOOD');
 	}
 
 	public static shareHandler(this: any) {
