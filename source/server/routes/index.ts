@@ -53,26 +53,30 @@ router.post('/fav', (req: any, res) => {
 	if (req.session.user) {
 		const userFile = `./db/${req.session.user}.json`;
 		if (fs.existsSync(userFile)) {
-			const userData = JSON.parse(fs.readFileSync(userFile, 'utf8'));
-			if (!userData.favs) {
-				userData.favs = [];
-			}
-			if (!userData.favs.includes(req.body.id)) {
-				userData.favs.push(req.body.id);
-				fs.writeFileSync(userFile, JSON.stringify(userData));
-				res.send(JSON.stringify({status: 'ok'}));
-			} else if (req.body.remove) {
-				const newFavs = [];
-				userData.favs.forEach((fav) => {
-					if (fav !== req.body.id) {
-						newFavs.push(fav);
-					}
-				});
-				userData.favs = newFavs;
-				fs.writeFileSync(userFile, JSON.stringify(userData));
-				res.send(JSON.stringify({status: 'removed'}));
+			if (req.body.id === null) {
+				res.send(JSON.stringify({status: 'null'}));
 			} else {
-				res.send(JSON.stringify({status: 'double'}));
+				const userData = JSON.parse(fs.readFileSync(userFile, 'utf8'));
+				if (!userData.favs) {
+					userData.favs = [];
+				}
+				if (!userData.favs.includes(req.body.id)) {
+					userData.favs.push(req.body.id);
+					fs.writeFileSync(userFile, JSON.stringify(userData));
+					res.send(JSON.stringify({status: 'ok'}));
+				} else if (req.body.remove) {
+					const newFavs = [];
+					userData.favs.forEach((fav) => {
+						if (fav !== req.body.id) {
+							newFavs.push(fav);
+						}
+					});
+					userData.favs = newFavs;
+					fs.writeFileSync(userFile, JSON.stringify(userData));
+					res.send(JSON.stringify({status: 'removed'}));
+				} else {
+					res.send(JSON.stringify({status: 'double'}));
+				}
 			}
 		} else {
 			res.send(JSON.stringify({status: 'bad_user'}));
