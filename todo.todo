@@ -1,19 +1,32 @@
-✔ Explanation above hero @done (3-7-2019 14:42:24)
-✔ Infopanel/button @done (3-7-2019 14:42:30)
-☐ hero onclick move text div
-☐ Register/Login combined
-☐ if like -> Show extra text on login to explain
-☐ hero mobile (no fx)
-☐ improve desk/tab hero (minmax topleft)
-☐ story detail css
-☐ story detail top-right buttons
-☐ footer?
-☐ verder lezen (read status when logged in)
-☐ if offline -> Show text there are only faved stories
-☐ loginform when logged in should be user thingy
+Done:
+	✔ Explanation above hero @done (3-7-2019 14:42:24)
+	✔ Infopanel/button @done (3-7-2019 14:42:30)
+	✔ Register/Login combined @done (4-7-2019 16:18:27)
+	✔ loginform when logged in should be user thingy @done (4-7-2019 16:25:57)
+	✔ mijn favorieten in filter als ingelogd @done (4-7-2019 16:32:28)
 
-☐ infopanel text
-☐ Docs
+Todo:
+	JS:
+		☐ verder lezen (read status when logged in)
+	Hero:
+		☐ hero onclick move text div
+		☐ hero mobile (no fx)
+		☐ improve desk/tab hero (minmax topleft)
+	Story:
+		☐ story detail css
+		☐ story detail top-right buttons
 
-optionals:
-☐ hero back button or switcher?
+Later:
+	☐ footer?
+	☐ login error meldingen
+
+Last:
+	☐ infopanel text
+
+Docs:
+	Interactieschemas
+
+
+Optionals:
+	☐ if offline -> Show text there are only faved stories
+	☐ hero back button or switcher?
