@@ -9,6 +9,7 @@ export class VPanel {
 	private panel: HTMLElement;
 	private title: string;
 	private UI: UITools;
+	private closer: HTMLElement;
 
 	constructor(title: string, contents: HTMLElement[] = []) {
 		this.UI = new UITools();
@@ -24,6 +25,10 @@ export class VPanel {
 
 		this.AddContent(contents, true);
 
+		this.closer = this.UI.CreateText('x', ['closer']);
+		this.panel.appendChild(this.closer);
+		this.ActivateCloser(this.closer);
+
 		document.body.appendChild(this.DOM);
 	}
 
@@ -31,7 +36,7 @@ export class VPanel {
 		this.DOM.classList.remove('disabled');
 	}
 
-	public AddCloser(closer: IvPanelCloser) {
+	public ActivateCloser(closer: IvPanelCloser) {
 		closer.panel = this;
 		closer.addEventListener('click', this.ClosePanel);
 	}

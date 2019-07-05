@@ -12,7 +12,8 @@ export class Renderer {
 			infopanel.addEventListener('click', () => {
 				infopanel.UI = new UITools();
 				infopanel.panel = new VPanel('Uw verhalen', [
-					infopanel.UI.CreateText(''),
+					infopanel.UI.CreateText('Op deze website kunt u geinspireerd raken voor uw volgende reis. Op basis van uw type bestemming hebben we een collectie met interessante verhalen.'),
+					infopanel.UI.CreateText('Indien u een account aanmaakt worden uw favoriete verhalen automatisch opgeslagen. Zo kunt u ook in het vliegtuig alvast wegdromen.'),
 				]);
 			});
 		}
@@ -257,6 +258,7 @@ export class Renderer {
 						this.UI.CreateLabel('Emailadres'),
 						'email',
 						'email',
+						true,
 					);
 					email.classList.add('hidden');
 					const newUser = this.UI.CreateInputText(
@@ -268,6 +270,7 @@ export class Renderer {
 						email.classList.toggle('hidden');
 					});
 					this.panel = new VPanel('Login', [
+						this.UI.CreateText('De combinatie van wachtwoord en gebruikersnaam is onbekend', ['hidden', 'error']),
 						this.UI.CreateInputText(
 							this.UI.CreateLabel('Naam'),
 							'name',
@@ -319,8 +322,7 @@ export class Renderer {
 					const content = document.createElement('div');
 					content.innerHTML = this.story['content:encoded'];
 
-					const back = UI.CreateHTML('<i class="fas fa-angle-left"></i>', null, null, 'button');
-					// const back = UI.CreateLink('<-', '#home', null, 'back');
+					const back = UI.CreateHTML('<i class="fas fa-angle-left"></i>', ['none', 'back'], null, 'button');
 					UI.addHandler(back, () => {
 						const storyDOM = document.querySelector('#single');
 						storyDOM.parentElement.removeChild(storyDOM);
@@ -328,7 +330,7 @@ export class Renderer {
 						main.classList.remove('hidden');
 					});
 
-					const comments = UI.CreateHTML(`<i class="fas fa-comment"></i> ${this.story['slash:comments']}`, null, null, 'button');
+					const comments = UI.CreateHTML(`<i class="fas fa-comment"></i> ${this.story['slash:comments']}`, ['none', 'comment'], null, 'button');
 
 					const fav = UI.CreateHTML(`<i class="fas fa-heart"></i>`, null, null, 'button');
 					fav.addEventListener('click', Renderer.favHandlerSingle);
@@ -353,6 +355,7 @@ export class Renderer {
 							content,
 						], null, null, 'section'),
 					], null, 'single', 'section');
+					story.dataset.id = this.story.id;
 					document.body.appendChild(story);
 					window.scrollTo(0, 0);
 				}
@@ -377,6 +380,8 @@ export class Renderer {
 				const res = JSON.parse(this.response);
 				if (res.status === 'ok' || res.status === 'new') {
 					window.location.reload();
+				} else if (res.status === 'bad' || res.status === 'unknown') {
+					document.querySelector('.hidden.error').classList.remove('hidden');
 				} else {
 					console.warn(res);
 				}
@@ -420,7 +425,30 @@ export class Renderer {
 	}
 
 	public static favHandlerSingle(this: any) {
-		console.log('fav single TOOD');
+		if (document.body.classList.contains('user')) {
+			const button = this;
+			const API = new XMLHttpRequest();
+			const remove = this.classList.contains('active') ? true : false;
+			API.open('POST', '/fav');
+			API.setRequestHeader('Content-Type', 'application/json');
+			API.onload = function() {
+				const res = JSON.parse(this.response);
+				if (res.status === 'ok') {
+					button.classList.add('active');
+				} else if (res.status === 'removed') {
+					button.classList.remove('active');
+				}
+			};
+			const storyDOM = document.querySelector('#single') as HTMLElement;
+			const storyID = storyDOM.dataset.id;
+			API.send(JSON.stringify({
+				id: storyID,
+				remove: `${remove}`,
+			}));
+		} else {
+			const userBtn = document.querySelector('#user') as HTMLElement;
+			userBtn.click();
+		}
 	}
 
 	public static shareHandler(this: any) {
