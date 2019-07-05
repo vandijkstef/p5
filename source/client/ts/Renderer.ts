@@ -45,7 +45,7 @@ export class Renderer {
 					for (const entry of data) {
 						if (id === 'fav') {
 							if (favData.status === 'ok') {
-								if (!favData.favs.includes(entry.id)) {
+								if (favData && favData.favs && !favData.favs.includes(entry.id)) {
 									continue;
 								}
 							} else {
@@ -104,7 +104,7 @@ export class Renderer {
 						section.dataset.length = entry['content:encoded'].length;
 						section.dataset.season = seasonID;
 
-						if (favData.status === 'ok' && favData.favs.includes(entry.id)) {
+						if (favData.status === 'ok' && favData.favs && favData.favs.includes(entry.id)) {
 							section.dataset.myfav = '1';
 							section.classList.add('fav');
 							fav.classList.add('active');
