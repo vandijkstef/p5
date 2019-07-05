@@ -93,6 +93,9 @@ router.post('/login', (req: any, res) => {
 		const userFile = `./db/${req.body.name}.json`;
 		if (!fs.existsSync(userFile)) {
 			if (req.body.newuser) {
+				if (!fs.existsSync('./db/')) {
+					fs.mkdirSync('./db/');
+				}
 				fs.writeFileSync(userFile, JSON.stringify({
 					name: req.body.name,
 					pass: md5(req.body.pass),
