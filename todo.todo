@@ -4,28 +4,22 @@ Done:
 	✔ Register/Login combined @done (4-7-2019 16:18:27)
 	✔ loginform when logged in should be user thingy @done (4-7-2019 16:25:57)
 	✔ mijn favorieten in filter als ingelogd @done (4-7-2019 16:32:28)
+	✔ hero onclick move text div @done (5-7-2019 17:31:00)
+	✔ improve desk/tab hero (minmax topleft) @done (5-7-2019 17:31:02)
+	✔ story detail css @done (4-7-2019 21:50:14)
+	✔ story detail top-right buttons @done (4-7-2019 22:09:16)
+	✔ close vPanel with X @done (5-7-2019 17:46:08)
+	✔ login error meldingen @done (5-7-2019 17:33:31)
+	✔ infopanel text @done (5-7-2019 17:46:22)
 
 Todo:
-	JS:
-		☐ verder lezen (read status when logged in)
-	Hero:
-		☐ hero onclick move text div
-		☐ hero mobile (no fx)
-		☐ improve desk/tab hero (minmax topleft)
-	Story:
-		☐ story detail css
-		☐ story detail top-right buttons
-
-Later:
+	☐ verder lezen (read status when logged in)
+	☐ hero mobile (no fx)
 	☐ footer?
-	☐ login error meldingen
-
-Last:
-	☐ infopanel text
+	☐ offline status?
 
 Docs:
-	Interactieschemas
-
+	☐ Interactieschemas
 
 Optionals:
 	☐ if offline -> Show text there are only faved stories
