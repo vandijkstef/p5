@@ -5,8 +5,7 @@
 		"target": "es5",
 		"lib": ["es6", "dom"],
 		"outDir": "../../../public/js",
-		"module": "es2015",
-		// "esModuleInterop": true,
+		"module": "es2015"
 	},
 	"include": [
 		"./"	
