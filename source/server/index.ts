@@ -6,7 +6,7 @@ import * as fileStore from 'session-file-store';
 const FileStore = fileStore(session);
 
 const config = {
-	port: 3000,
+	port: process.env.PORT || 3000,
 };
 
 process.env.menuObject = '{}';
